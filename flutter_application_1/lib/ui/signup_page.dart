@@ -28,7 +28,6 @@ class _SignupPageState extends State<SignupPage> {
             ),
             const SizedBox(height: 30),
 
-            // Name
             TextField(
               controller: nameController,
               decoration: const InputDecoration(
@@ -39,7 +38,6 @@ class _SignupPageState extends State<SignupPage> {
             ),
             const SizedBox(height: 15),
 
-            // Email
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -51,7 +49,6 @@ class _SignupPageState extends State<SignupPage> {
             ),
             const SizedBox(height: 15),
 
-            // Password
             TextField(
               controller: passwordController,
               obscureText: true,
@@ -63,7 +60,6 @@ class _SignupPageState extends State<SignupPage> {
             ),
             const SizedBox(height: 15),
 
-            // Role Selection
             DropdownButtonFormField<String>(
               value: selectedRole,
               items: const [
@@ -82,13 +78,11 @@ class _SignupPageState extends State<SignupPage> {
             ),
             const SizedBox(height: 25),
 
-            // Signup Button
             SizedBox(
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: API signup logic later
                   print("Name: ${nameController.text}");
                   print("Email: ${emailController.text}");
                   print("Role: $selectedRole");
