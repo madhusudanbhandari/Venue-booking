@@ -30,9 +30,11 @@ class _SignupPageState extends State<SignupPage> {
 
             TextField(
               controller: nameController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Full Name",
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 prefixIcon: Icon(Icons.person),
               ),
             ),
@@ -41,9 +43,11 @@ class _SignupPageState extends State<SignupPage> {
             TextField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Email",
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 prefixIcon: Icon(Icons.email),
               ),
             ),
@@ -52,9 +56,11 @@ class _SignupPageState extends State<SignupPage> {
             TextField(
               controller: passwordController,
               obscureText: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Password",
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 prefixIcon: Icon(Icons.lock),
               ),
             ),
@@ -71,9 +77,11 @@ class _SignupPageState extends State<SignupPage> {
                   selectedRole = value!;
                 });
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Register As",
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
             const SizedBox(height: 25),
