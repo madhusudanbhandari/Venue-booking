@@ -15,7 +15,8 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF061A3A),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 30),
+        padding: const EdgeInsets.all(50.0),
+        //padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
         child: Column(
           children: [
             /// 🔹 TOP NAV BAR
