@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
+import 'package:flutter_application_1/services/user_services.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -124,9 +125,15 @@ class _SignupPageState extends State<SignupPage> {
                     if (_formKey.currentState!.validate()) {
                       try {
                         final authService = AuthService();
+                        final userService = UserServices();
                         await authService.signin(
                           emailController.text.trim(),
                           passwordController.text.trim(),
+                        );
+                        await userService.saveUserData(
+                          name: nameController.text.trim(),
+                          email: emailController.text.trim(),
+                          role: selectedRole,
                         );
 
                         ScaffoldMessenger.of(context).showSnackBar(

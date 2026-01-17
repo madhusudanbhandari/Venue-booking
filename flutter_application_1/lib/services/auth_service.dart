@@ -15,19 +15,19 @@ class AuthService {
       return null;
     }
   }
-}
 
-Future<User?> login(String email, String password) async {
-  try {
-    UserCredential result = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
-    return result.user;
-  } catch (e) {
-    print("Error in login: $e");
-    return null;
+  Future<User?> login(String email, String password) async {
+    try {
+      UserCredential result = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      return result.user;
+    } catch (e) {
+      print("Error in login: $e");
+      return null;
+    }
   }
-}
 
-Future<void> logout() async {
-  await FirebaseAuth.instance.signOut();
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+  }
 }
