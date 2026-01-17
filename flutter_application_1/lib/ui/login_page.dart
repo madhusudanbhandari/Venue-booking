@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/dashboard/client_dashboard.dart';
+import 'package:flutter_application_1/dashboard/owner_dashboard.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
 import 'package:flutter_application_1/services/user_services.dart';
 import 'package:flutter_application_1/ui/signup_page.dart';
@@ -91,6 +93,22 @@ class _LoginPageState extends State<LoginPage> {
                           passwordController.text.trim(),
                         );
                         String? role = await userService.getUserRole();
+
+                        if (role == 'Owner') {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const OwnerDashboard(),
+                            ),
+                          );
+                        } else {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const ClientDashboard(),
+                            ),
+                          );
+                        }
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Logged in as $role")),
