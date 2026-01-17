@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "95930596648",
+    "project_id": "venue-book-6548b",
+    "storage_bucket": "venue-book-6548b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95930596648:android:0bc17f3d7a01689274641d",
+        "android_client_info": {
+          "package_name": "Venue.booking12"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaAXCMWOJPF6OcKLVLG3Vxl7Z8wfUwAyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
