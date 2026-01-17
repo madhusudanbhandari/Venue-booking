@@ -39,7 +39,10 @@ class HomePage extends StatelessWidget {
                           MaterialPageRoute(builder: (_) => const Home()),
                         );
                       },
-                      child: const Text("Home"),
+                      child: const Text(
+                        "Home",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
@@ -50,7 +53,10 @@ class HomePage extends StatelessWidget {
                           ),
                         );
                       },
-                      child: const Text("Services"),
+                      child: const Text(
+                        "Services",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
@@ -59,7 +65,10 @@ class HomePage extends StatelessWidget {
                           MaterialPageRoute(builder: (_) => const AboutPage()),
                         );
                       },
-                      child: const Text("About"),
+                      child: const Text(
+                        "About",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
@@ -82,7 +91,10 @@ class HomePage extends StatelessWidget {
                           MaterialPageRoute(builder: (_) => const FaqPage()),
                         );
                       },
-                      child: const Text("FAQ"),
+                      child: const Text(
+                        "FAQ",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     const SizedBox(width: 20),
                     ElevatedButton(
