@@ -11,7 +11,7 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Owner Dashboard')),
+      appBar: AppBar(title: Text('Owner Dashboard'), centerTitle: true),
       body: const Center(
         child: Text('Welcome Venue Owner', style: TextStyle(fontSize: 20)),
       ),

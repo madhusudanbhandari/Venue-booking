@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/about.dart';
+import 'package:flutter_application_1/features/contact.dart';
+import 'package:flutter_application_1/features/faq.dart';
+import 'package:flutter_application_1/features/home.dart';
+import 'package:flutter_application_1/features/learn_more.dart';
+import 'package:flutter_application_1/features/services.dart';
 import 'login_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -26,11 +32,58 @@ class HomePage extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    _navItem("Home"),
-                    _navItem("Services"),
-                    _navItem("About"),
-                    _navItem("Contact"),
-                    _navItem("FAQ"),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const Home()),
+                        );
+                      },
+                      child: const Text("Home"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ServicesPage(),
+                          ),
+                        );
+                      },
+                      child: const Text("Services"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const AboutPage()),
+                        );
+                      },
+                      child: const Text("About"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ContactPage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Contact",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const FaqPage()),
+                        );
+                      },
+                      child: const Text("FAQ"),
+                    ),
                     const SizedBox(width: 20),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -134,7 +187,14 @@ class HomePage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(30),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const LearnMore(),
+                                  ),
+                                );
+                              },
                               child: const Text(
                                 "LEARN MORE",
                                 style: TextStyle(color: Colors.white),
