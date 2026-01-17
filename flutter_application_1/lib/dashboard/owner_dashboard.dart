@@ -10,6 +10,11 @@ class OwnerDashboard extends StatefulWidget {
 class _OwnerDashboardState extends State<OwnerDashboard> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: Text('Owner Dashboard')),
+      body: const Center(
+        child: Text('Welcome Venue Owner', style: TextStyle(fontSize: 20)),
+      ),
+    );
   }
 }
