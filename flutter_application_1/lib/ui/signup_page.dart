@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/auth_service.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -34,7 +35,12 @@ class _SignupPageState extends State<SignupPage> {
 
               TextFormField(
                 controller: nameController,
-
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your full name';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   labelText: "Full Name",
                   border: OutlineInputBorder(
@@ -45,9 +51,18 @@ class _SignupPageState extends State<SignupPage> {
               ),
               const SizedBox(height: 15),
 
-              TextField(
+              TextFormField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  if (!value.contains('@')) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   labelText: "Email",
                   border: OutlineInputBorder(
@@ -58,9 +73,18 @@ class _SignupPageState extends State<SignupPage> {
               ),
               const SizedBox(height: 15),
 
-              TextField(
+              TextFormField(
                 controller: passwordController,
                 obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters long';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   labelText: "Password",
                   border: OutlineInputBorder(
@@ -95,10 +119,27 @@ class _SignupPageState extends State<SignupPage> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
-                    print("Name: ${nameController.text}");
-                    print("Email: ${emailController.text}");
-                    print("Role: $selectedRole");
+                  onPressed: () async {
+                    // Handle signup logic
+                    if (_formKey.currentState!.validate()) {
+                      try {
+                        final authService = AuthService();
+                        await authService.signin(
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                        );
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Signup validation successful'),
+                          ),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text(e.toString())));
+                      }
+                    }
                   },
                   child: const Text("Sign Up", style: TextStyle(fontSize: 18)),
                 ),

@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
                   }
-                  if(!value.contains('@')) {
+                  if (!value.contains('@')) {
                     return 'Please enter a valid email';
                   }
                   return null;
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(height: 25),
-          
+
               TextFormField(
                 controller: passwordController,
                 obscureText: true,
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';
                   }
-                  if(value.length < 6) {
+                  if (value.length < 6) {
                     return 'Password must be at least 6 characters long';
                   }
                   return null;
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 30),
-          
+
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -81,7 +81,9 @@ class _LoginPageState extends State<LoginPage> {
                     // Handle login logic
                     if (_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Login validation successful')),
+                        const SnackBar(
+                          content: Text('Login validation successful'),
+                        ),
                       );
                     }
                   },
