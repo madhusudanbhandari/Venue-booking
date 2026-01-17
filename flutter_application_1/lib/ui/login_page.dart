@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/auth_service.dart';
+import 'package:flutter_application_1/services/user_services.dart';
 import 'package:flutter_application_1/ui/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -77,14 +79,31 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // Handle login logic
                     if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Login validation successful'),
-                        ),
-                      );
+                      try {
+                        final authService = AuthService();
+                        final userService = UserServices();
+
+                        await authService.login(
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                        );
+                        String? role = await userService.getUserRole();
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Logged in as $role")),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text(e.toString())));
+                      }
+
+                      // const SnackBar(
+                      //   content: Text('Login validation successful'),
+                      // ),
                     }
                   },
                   child: const Text("Login", style: TextStyle(fontSize: 18)),
