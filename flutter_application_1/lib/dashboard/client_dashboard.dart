@@ -14,18 +14,7 @@ class _ClientDashboardState extends State<ClientDashboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Client Dashboard"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            },
-          ),
-          IconButton(icon: const Icon(Icons.logout), onPressed: () {}),
-        ],
+        actions: [IconButton(icon: const Icon(Icons.logout), onPressed: () {})],
       ),
 
       body: Padding(
