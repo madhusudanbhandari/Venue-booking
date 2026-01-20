@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.menu, color: Colors.white, size: 28),
                     onPressed: () {
-                      _showMobileMenu(context);
+                      _showMenu(context);
                     },
                   ),
                 ],
@@ -146,7 +146,7 @@ class HomePage extends StatelessWidget {
   }
 
   /// Mobile Menu Bottom Sheet
-  void _showMobileMenu(BuildContext context) {
+  void _showMenu(BuildContext context) {
     showModalBottomSheet(
       context: context,
       backgroundColor: const Color(0xFF061A3A),
