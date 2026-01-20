@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/ui/profile_page.dart';
 
 class ClientDashboard extends StatefulWidget {
   const ClientDashboard({super.key});
@@ -14,7 +15,16 @@ class _ClientDashboardState extends State<ClientDashboard> {
       appBar: AppBar(
         title: const Text("Client Dashboard"),
         actions: [
-          IconButton(icon: const Icon(Icons.person), onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              // Navigate to profile page
+              Navigator.pushNamed(
+                context,
+                MaterialPageRoute(builder: (_) => ProfilePage()).toString(),
+              );
+            },
+          ),
           IconButton(icon: const Icon(Icons.logout), onPressed: () {}),
         ],
       ),

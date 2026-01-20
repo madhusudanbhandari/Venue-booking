@@ -131,6 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   prefixIcon: Icon(Icons.home),
                 ),
               ),
+              const SizedBox(height: 15),
 
               DropdownButtonFormField<String>(
                 value: selectedRole,

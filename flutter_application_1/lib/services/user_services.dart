@@ -4,7 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 class UserServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // ✅ SAVE USER DATA (SIGNUP)
+
+  /// ==============================
+  /// SAVE USER DATA AFTER SIGNUP
+  /// ==============================
   Future<void> saveUserData({
     required String name,
     required String email,
@@ -15,34 +18,71 @@ class UserServices {
     User? user = _auth.currentUser;
 
     if (user == null) {
-      throw "No authenticated user found";
+      throw Exception("User not logged in");
     }
 
     await _db.collection('users').doc(user.uid).set({
       'uid': user.uid,
       'name': name,
       'email': email,
-      'role': role,
       'phone': phone,
       'address': address,
+      'role': role,
       'createdAt': FieldValue.serverTimestamp(),
     });
   }
 
-  // ✅ GET USER ROLE (LOGIN)
+  /// ==============================
+  /// GET USER ROLE (AFTER LOGIN)
+  /// ==============================
   Future<String?> getUserRole() async {
-    User? user = FirebaseAuth.instance.currentUser;
+    User? user = _auth.currentUser;
+    if (user == null) return null;
 
-    if (user == null) {
-      throw "No authenticated user found";
-    }
+    final DocumentSnapshot doc = await _db
+        .collection('users')
+        .doc(user.uid)
+        .get();
 
-    DocumentSnapshot doc = await _db.collection('users').doc(user.uid).get();
+    if (!doc.exists) return null;
 
-    if (!doc.exists) {
-      throw "User data not found in Firestore";
-    }
+    return doc.get('role');
+  }
 
-    return doc['role'];
+  /// ==============================
+  /// GET COMPLETE USER DATA
+  /// (FOR PROFILE PAGE)
+  /// ==============================
+  Future<Map<String, dynamic>?> getUserData() async {
+    User? user = _auth.currentUser;
+    if (user == null) return null;
+
+    final DocumentSnapshot doc = await _db
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    if (!doc.exists) return null;
+
+    return doc.data() as Map<String, dynamic>;
+  }
+
+  /// ==============================
+  /// UPDATE USER PROFILE
+  /// ==============================
+  Future<void> updateUserData({
+    required String name,
+    required String phone,
+    required String address,
+  }) async {
+    User? user = _auth.currentUser;
+    if (user == null) return;
+
+    await _db.collection('users').doc(user.uid).update({
+      'name': name,
+      'phone': phone,
+      'address': address,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
   }
 }
