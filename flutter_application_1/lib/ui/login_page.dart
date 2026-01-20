@@ -3,7 +3,7 @@ import 'package:flutter_application_1/dashboard/client_dashboard.dart';
 import 'package:flutter_application_1/dashboard/owner_dashboard.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
 import 'package:flutter_application_1/services/user_services.dart';
-import 'package:flutter_application_1/ui/signup_page.dart';
+import 'package:flutter_application_1/ui/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -138,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SignupPage(),
+                          builder: (context) => const RegisterPage(),
                         ),
                       );
                     },
