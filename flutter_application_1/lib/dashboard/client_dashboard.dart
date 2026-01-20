@@ -18,10 +18,9 @@ class _ClientDashboardState extends State<ClientDashboard> {
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
-              // Navigate to profile page
-              Navigator.pushNamed(
+              Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => ProfilePage()).toString(),
+                MaterialPageRoute(builder: (context) => ProfilePage()),
               );
             },
           ),
@@ -73,7 +72,16 @@ class _ClientDashboardState extends State<ClientDashboard> {
       ),
 
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        currentIndex: 0,
+        onTap: (index) {
+          if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          }
+        },
+        items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: "Bookings"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),

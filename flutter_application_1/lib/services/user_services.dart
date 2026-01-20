@@ -5,9 +5,6 @@ class UserServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  /// ==============================
-  /// SAVE USER DATA AFTER SIGNUP
-  /// ==============================
   Future<void> saveUserData({
     required String name,
     required String email,
@@ -32,9 +29,6 @@ class UserServices {
     });
   }
 
-  /// ==============================
-  /// GET USER ROLE (AFTER LOGIN)
-  /// ==============================
   Future<String?> getUserRole() async {
     User? user = _auth.currentUser;
     if (user == null) return null;
@@ -49,10 +43,6 @@ class UserServices {
     return doc.get('role');
   }
 
-  /// ==============================
-  /// GET COMPLETE USER DATA
-  /// (FOR PROFILE PAGE)
-  /// ==============================
   Future<Map<String, dynamic>?> getUserData() async {
     User? user = _auth.currentUser;
     if (user == null) return null;
@@ -67,22 +57,19 @@ class UserServices {
     return doc.data() as Map<String, dynamic>;
   }
 
-  /// ==============================
-  /// UPDATE USER PROFILE
-  /// ==============================
-  Future<void> updateUserData({
-    required String name,
-    required String phone,
-    required String address,
-  }) async {
-    User? user = _auth.currentUser;
-    if (user == null) return;
+  //   Future<void> updateUserData({
+  //     required String name,
+  //     required String phone,
+  //     required String address,
+  //   }) async {
+  //     User? user = _auth.currentUser;
+  //     if (user == null) return;
 
-    await _db.collection('users').doc(user.uid).update({
-      'name': name,
-      'phone': phone,
-      'address': address,
-      'updatedAt': FieldValue.serverTimestamp(),
-    });
-  }
+  //     await _db.collection('users').doc(user.uid).update({
+  //       'name': name,
+  //       'phone': phone,
+  //       'address': address,
+  //       'updatedAt': FieldValue.serverTimestamp(),
+  //     });
+  //   }
 }
