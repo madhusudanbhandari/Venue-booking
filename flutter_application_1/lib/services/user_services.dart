@@ -3,23 +3,28 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class UserServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   // ✅ SAVE USER DATA (SIGNUP)
   Future<void> saveUserData({
     required String name,
     required String email,
     required String role,
+    required String phone,
+    required String address,
   }) async {
-    User? user = FirebaseAuth.instance.currentUser;
+    User? user = _auth.currentUser;
 
     if (user == null) {
       throw "No authenticated user found";
     }
 
     await _db.collection('users').doc(user.uid).set({
+      'uid': user.uid,
       'name': name,
       'email': email,
       'role': role,
+      'phone': phone,
+      'address': address,
       'createdAt': FieldValue.serverTimestamp(),
     });
   }
