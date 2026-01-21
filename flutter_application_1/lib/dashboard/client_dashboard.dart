@@ -55,7 +55,40 @@ class _ClientDashboardState extends State<ClientDashboard> {
 
             const SizedBox(height: 15),
 
-            printVenues(),
+            FutureBuilder<List<Map<String, dynamic>>>(
+              future: VenueServices().getAllVenues(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text("No venues available.");
+                } else {
+                  final venues = snapshot.data!;
+                  return Column(
+                    children: venues.map((venue) {
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          title: Text(venue['name']),
+                          subtitle: Text(
+                            "${venue['location']} • Rs. ${venue['price']}/day",
+                          ),
+                          trailing: ElevatedButton(
+                            onPressed: () {},
+                            child: const Text("Book"),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -92,14 +125,4 @@ class _ClientDashboardState extends State<ClientDashboard> {
   //     ),
   //   );
   // }
-  printVenues() async {
-    VenueServices venueServices = VenueServices();
-    List<Map<String, dynamic>> venues = await venueServices.getAllVenues();
-
-    for (var venue in venues) {
-      print(
-        "Name: ${venue['name']}, Location: ${venue['location']}, Price: ${venue['price']}",
-      );
-    }
-  }
 }

@@ -50,34 +50,33 @@ class OwnerDashboard extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            _venueTile(),
+            //_venueTile(),
+            FutureBuilder<List<Map<String, dynamic>>>(
+              future: VenueServices().getAllVenues(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text("No venues found");
+                } else {
+                  final venues = snapshot.data!;
+                  return Column(
+                    children: venues.map((venue) {
+                      return Card(
+                        child: ListTile(
+                          title: Text(venue['name']),
+                          subtitle: Text(venue['location']),
+                          trailing: Text("Rs. ${venue['price']}"),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                }
+              },
+            ),
 
-            //printVenues(),
-            // FutureBuilder<List<Map<String, dynamic>>>(
-            //   future: VenueServices().getAllVenues(),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return const CircularProgressIndicator();
-            //     } else if (snapshot.hasError) {
-            //       return Text("Error: ${snapshot.error}");
-            //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            //       return const Text("No venues found");
-            //     } else {
-            //       final venues = snapshot.data!;
-            //       return Column(
-            //         children: venues.map((venue) {
-            //           return Card(
-            //             child: ListTile(
-            //               title: Text(venue['name']),
-            //               subtitle: Text(venue['location']),
-            //               trailing: Text("Rs. ${venue['price']}"),
-            //             ),
-            //           );
-            //         }).toList(),
-            //       );
-            //     }
-            //   },
-            // ),
             const SizedBox(height: 30),
 
             /// 📅 Booking Requests
@@ -116,26 +115,17 @@ class OwnerDashboard extends StatelessWidget {
     );
   }
 
-  Widget _venueTile() {
-    return Card(
-      child: ListTile(
-        leading: const Icon(Icons.location_city),
-        title: const Text("Grand Hall"),
-        subtitle: const Text("Active"),
-        trailing: IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
-      ),
-    );
-  }
-  // printVenues() async {
-  //   VenueServices venueServices = VenueServices();
-  //   List<Map<String, dynamic>> venues = await venueServices.getAllVenues();
-
-  //   for (var venue in venues) {
-  //     print(
-  //       "Name: ${venue['name']}, Location: ${venue['location']}, Price: ${venue['price']}",
-  //     );
-  //   }
+  // Widget _venueTile() {
+  //   return Card(
+  //     child: ListTile(
+  //       leading: const Icon(Icons.location_city),
+  //       title: const Text("Grand Hall"),
+  //       subtitle: const Text("Active"),
+  //       trailing: IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
+  //     ),
+  //   );
   // }
+  // Removed printVenues() as it's not needed anymore.
 
   Widget _bookingRequest() {
     return Card(
