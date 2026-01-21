@@ -163,7 +163,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       try {
                         final authService = AuthService();
                         final userService = UserServices();
-                        await authService.signin(
+                        await authService.signup(
                           emailController.text.trim(),
                           passwordController.text.trim(),
                         );
