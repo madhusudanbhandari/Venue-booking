@@ -82,48 +82,53 @@ class _LoginPageState extends State<LoginPage> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () async {
-                    // Handle login logic
-                    if (_formKey.currentState!.validate()) {
-                      try {
-                        final authService = AuthService();
-                        final userService = UserServices();
+                    if (!_formKey.currentState!.validate()) return;
 
-                        await authService.login(
-                          emailController.text.trim(),
-                          passwordController.text.trim(),
-                        );
-                        String? role = await userService.getUserRole();
+                    try {
+                      final authService = AuthService();
+                      final userService = UserServices();
 
-                        if (role == 'Owner') {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const OwnerDashboard(),
-                            ),
-                          );
-                        } else {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const ClientDashboard(),
-                            ),
-                          );
-                        }
+                      // 1️⃣ AUTH CHECK (email + password)
+                      await authService.login(
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
+                      );
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Logged in as $role")),
-                        );
-                      } catch (e) {
-                        ScaffoldMessenger.of(
+                      // 2️⃣ FIRESTORE USER CHECK
+                      final userData = await userService.getUserDataOrFail();
+
+                      final role = userData['role'];
+
+                      // 3️⃣ SAFE ROLE CHECK
+                      if (role == 'Client') {
+                        Navigator.pushReplacement(
                           context,
-                        ).showSnackBar(SnackBar(content: Text(e.toString())));
+                          MaterialPageRoute(
+                            builder: (_) => const ClientDashboard(),
+                          ),
+                        );
+                      } else if (role == 'Owner') {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const OwnerDashboard(),
+                          ),
+                        );
+                      } else {
+                        await authService.logout();
+                        throw Exception("Invalid user role");
                       }
 
-                      // const SnackBar(
-                      //   content: Text('Login validation successful'),
-                      // ),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Logged in as $role")),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(e.toString())));
                     }
                   },
+
                   child: const Text("Login", style: TextStyle(fontSize: 18)),
                 ),
               ),

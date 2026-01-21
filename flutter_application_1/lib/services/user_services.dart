@@ -72,4 +72,19 @@ class UserServices {
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
+
+  Future<Map<String, dynamic>> getUserDataOrFail() async {
+    User? user = _auth.currentUser;
+    if (user == null) {
+      throw Exception("User not authenticated");
+    }
+
+    final doc = await _db.collection('users').doc(user.uid).get();
+
+    if (!doc.exists) {
+      throw Exception("User profile not found. Please register again.");
+    }
+
+    return doc.data()!;
+  }
 }
