@@ -254,10 +254,10 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _navItem(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Text(title, style: const TextStyle(color: Colors.white70)),
-    );
-  }
+  // Widget _navItem(String title) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal: 15),
+  //     child: Text(title, style: const TextStyle(color: Colors.white70)),
+  //   );
+  // }
 }
