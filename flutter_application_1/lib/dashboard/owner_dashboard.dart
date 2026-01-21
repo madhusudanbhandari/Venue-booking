@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/ui/add_venue_page.dart';
 import 'package:flutter_application_1/ui/profile_page.dart';
 
 class OwnerDashboard extends StatelessWidget {
@@ -13,8 +14,13 @@ class OwnerDashboard extends StatelessWidget {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddVenuePage()),
+          );
+        },
+        child: const Text('Add Venue'),
       ),
 
       body: Padding(
