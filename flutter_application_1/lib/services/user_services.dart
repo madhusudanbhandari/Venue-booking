@@ -29,19 +29,19 @@ class UserServices {
     });
   }
 
-  Future<String?> getUserRole() async {
-    User? user = _auth.currentUser;
-    if (user == null) return null;
+  // Future<String?> getUserRole() async {
+  //   User? user = _auth.currentUser;
+  //   if (user == null) return null;
 
-    final DocumentSnapshot doc = await _db
-        .collection('users')
-        .doc(user.uid)
-        .get();
+  //   final DocumentSnapshot doc = await _db
+  //       .collection('users')
+  //       .doc(user.uid)
+  //       .get();
 
-    if (!doc.exists) return null;
+  //   if (!doc.exists) return null;
 
-    return doc.get('role');
-  }
+  //   return doc.get('role');
+  // }
 
   Future<Map<String, dynamic>?> getUserData() async {
     User? user = _auth.currentUser;
@@ -57,21 +57,21 @@ class UserServices {
     return doc.data() as Map<String, dynamic>;
   }
 
-  Future<void> updateUserData({
-    required String name,
-    required String phone,
-    required String address,
-  }) async {
-    User? user = _auth.currentUser;
-    if (user == null) return;
+  // Future<void> updateUserData({
+  //   required String name,
+  //   required String phone,
+  //   required String address,
+  // }) async {
+  //   User? user = _auth.currentUser;
+  //   if (user == null) return;
 
-    await _db.collection('users').doc(user.uid).update({
-      'name': name,
-      'phone': phone,
-      'address': address,
-      'updatedAt': FieldValue.serverTimestamp(),
-    });
-  }
+  //   await _db.collection('users').doc(user.uid).update({
+  //     'name': name,
+  //     'phone': phone,
+  //     'address': address,
+  //     'updatedAt': FieldValue.serverTimestamp(),
+  //   });
+  // }
 
   Future<Map<String, dynamic>> getUserDataOrFail() async {
     User? user = _auth.currentUser;
