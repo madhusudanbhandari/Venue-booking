@@ -163,10 +163,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       try {
                         final authService = AuthService();
                         final userService = UserServices();
-                        await authService.signup(
+                        final user = await authService.signup(
                           emailController.text.trim(),
                           passwordController.text.trim(),
                         );
+                        if (user == null) {
+                          throw Exception('Registration failed');
+                        }
                         await userService.saveUserData(
                           name: nameController.text.trim(),
                           email: emailController.text.trim(),

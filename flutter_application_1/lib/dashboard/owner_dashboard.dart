@@ -15,13 +15,14 @@ class OwnerDashboard extends StatelessWidget {
       ),
 
       floatingActionButton: FloatingActionButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AddVenuePage()),
           );
         },
-        child: const Text('Add Venue'),
+        child: const Text('Add Venue', style: TextStyle(fontSize: 14)),
       ),
 
       body: Padding(
@@ -51,29 +52,33 @@ class OwnerDashboard extends StatelessWidget {
             const SizedBox(height: 10),
 
             //_venueTile(),
-            FutureBuilder<List<Map<String, dynamic>>>(
-              future: VenueServices().getAllVenues(),
+            StreamBuilder(
+              stream: VenueServices().getOwnerVenues(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+                if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Text("Error: ${snapshot.error}");
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Text("No venues found");
-                } else {
-                  final venues = snapshot.data!;
-                  return Column(
-                    children: venues.map((venue) {
-                      return Card(
-                        child: ListTile(
-                          title: Text(venue['name']),
-                          subtitle: Text(venue['location']),
-                          trailing: Text("Rs. ${venue['price']}"),
-                        ),
-                      );
-                    }).toList(),
-                  );
                 }
+
+                final venues = snapshot.data!.docs;
+
+                if (venues.isEmpty) {
+                  return const Center(child: Text("No venues added yet"));
+                }
+
+                return ListView.builder(
+                  itemCount: venues.length,
+                  itemBuilder: (context, index) {
+                    final data = venues[index].data() as Map<String, dynamic>;
+
+                    return Card(
+                      child: ListTile(
+                        title: Text(data['venueName']),
+                        subtitle: Text(data['location']),
+                        trailing: Text("Rs ${data['price']}"),
+                      ),
+                    );
+                  },
+                );
               },
             ),
 

@@ -28,30 +28,20 @@ class VenueServices {
     });
   }
 
-  Future<List<Map<String, dynamic>>> getAllVenues() async {
-    QuerySnapshot snapshot = await _db.collection('venues').get();
+  Stream<QuerySnapshot> getOwnerVenues() {
+    final user = _auth.currentUser;
+    if (user == null) throw Exception("Not logged in");
 
-    // Convert documents to a list of maps
-    List<Map<String, dynamic>> venues = snapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      data['id'] = doc.id; // include the document ID if needed
-      return data;
-    }).toList();
-
-    return venues;
+    return _db
+        .collection('venues')
+        .where('ownerId', isEqualTo: user.uid)
+        .snapshots();
   }
 
-  // Stream<List<Map<String, dynamic>>> streamVenues() {
-  //   return _db
-  //       .collection('venues')
-  //       .orderBy('createdAt', descending: true)
-  //       .snapshots()
-  //       .map(
-  //         (snapshot) => snapshot.docs.map((doc) {
-  //           Map<String, dynamic> data = doc.data();
-  //           data['id'] = doc.id; // include document ID
-  //           return data;
-  //         }).toList(),
-  //       );
-  // }
+  Stream<QuerySnapshot> getAllVenues() {
+    return _db
+        .collection('venues')
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
 }

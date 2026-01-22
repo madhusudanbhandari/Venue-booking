@@ -55,40 +55,41 @@ class _ClientDashboardState extends State<ClientDashboard> {
 
             const SizedBox(height: 15),
 
-            FutureBuilder<List<Map<String, dynamic>>>(
-              future: VenueServices().getAllVenues(),
+            StreamBuilder(
+              stream: VenueServices().getAllVenues(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+                if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Text("Error: ${snapshot.error}");
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Text("No venues available.");
-                } else {
-                  final venues = snapshot.data!;
-                  return Column(
-                    children: venues.map((venue) {
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: ListTile(
-                          title: Text(venue['name']),
-                          subtitle: Text(
-                            "${venue['location']} • Rs. ${venue['price']}/day",
-                          ),
-                          trailing: ElevatedButton(
-                            onPressed: () {},
-                            child: const Text("Book"),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  );
                 }
+
+                final venues = snapshot.data!.docs;
+
+                if (venues.isEmpty) {
+                  return const Center(child: Text("No venues available"));
+                }
+
+                return ListView.builder(
+                  itemCount: venues.length,
+                  itemBuilder: (context, index) {
+                    final data = venues[index].data() as Map<String, dynamic>;
+
+                    return Card(
+                      child: ListTile(
+                        title: Text(data['venueName']),
+                        subtitle: Text(
+                          "${data['location']} • Capacity ${data['capacity']}",
+                        ),
+                        trailing: Text("Rs ${data['price']}"),
+                      ),
+                    );
+                  },
+                );
               },
             ),
+
+            // _venueCard(),
+            // _venueCard(),
+            // _venueCard(),
           ],
         ),
       ),
