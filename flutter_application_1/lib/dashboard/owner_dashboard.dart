@@ -66,13 +66,15 @@ class OwnerDashboard extends StatelessWidget {
                 }
 
                 return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: venues.length,
                   itemBuilder: (context, index) {
                     final data = venues[index].data() as Map<String, dynamic>;
 
                     return Card(
                       child: ListTile(
-                        title: Text(data['venueName']),
+                        title: Text(data['name']),
                         subtitle: Text(data['location']),
                         trailing: Text("Rs ${data['price']}"),
                       ),
