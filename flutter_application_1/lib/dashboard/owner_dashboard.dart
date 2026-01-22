@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/venue_services.dart';
 import 'package:flutter_application_1/ui/add_venue_page.dart';
+import 'package:flutter_application_1/ui/booking_request.dart';
 import 'package:flutter_application_1/ui/profile_page.dart';
 
 class OwnerDashboard extends StatelessWidget {
@@ -94,7 +95,15 @@ class OwnerDashboard extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            _bookingRequest(),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BookingRequestPage()),
+                );
+              },
+              child: const Text('View Booking Request'),
+            ),
           ],
         ),
       ),
@@ -118,40 +127,6 @@ class OwnerDashboard extends StatelessWidget {
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
-      ),
-    );
-  }
-
-  // Widget _venueTile() {
-  //   return Card(
-  //     child: ListTile(
-  //       leading: const Icon(Icons.location_city),
-  //       title: const Text("Grand Hall"),
-  //       subtitle: const Text("Active"),
-  //       trailing: IconButton(icon: const Icon(Icons.edit), onPressed: () {}),
-  //     ),
-  //   );
-  // }
-  // Removed printVenues() as it's not needed anymore.
-
-  Widget _bookingRequest() {
-    return Card(
-      child: ListTile(
-        title: const Text("Booking from Ram"),
-        subtitle: const Text("Date: 25 Oct • 1 Day"),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.check, color: Colors.green),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.close, color: Colors.red),
-              onPressed: () {},
-            ),
-          ],
-        ),
       ),
     );
   }
