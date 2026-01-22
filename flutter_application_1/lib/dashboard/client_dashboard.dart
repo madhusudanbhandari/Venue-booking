@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/venue_services.dart';
+import 'package:flutter_application_1/ui/book_venue.dart';
 import 'package:flutter_application_1/ui/profile_page.dart';
 
 class ClientDashboard extends StatefulWidget {
@@ -82,16 +83,28 @@ class _ClientDashboardState extends State<ClientDashboard> {
                           "${data['location']} • Capacity ${data['capacity']}",
                         ),
                         trailing: Text("Rs ${data['price']}"),
+                        leading: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookVenuePage(
+                                  venueId: venues[index].id,
+                                  venueName: data['name'],
+                                  venuePrice: data['price'],
+                                  venueLocation: data['location'],
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text('Book'),
+                        ),
                       ),
                     );
                   },
                 );
               },
             ),
-
-            // _venueCard(),
-            // _venueCard(),
-            // _venueCard(),
           ],
         ),
       ),
@@ -114,18 +127,4 @@ class _ClientDashboardState extends State<ClientDashboard> {
       ),
     );
   }
-
-  // Widget _venueCard() {
-  //   return Card(
-  //     margin: const EdgeInsets.only(bottom: 15),
-  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-  //     child: ListTile(
-  //       // leading: const Icon(Icons.location_city),
-  //       // title: const Text("Grand Hall"),
-  //       // subtitle: const Text("Kathmandu • Rs. 20,000/day"),
-  //       // trailing: ElevatedButton(onPressed: () {}, child: const Text("Book")),
-
-  //     ),
-  //   );
-  // }
 }
