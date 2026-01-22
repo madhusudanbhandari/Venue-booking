@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
 import 'package:flutter_application_1/services/user_services.dart';
+import 'package:flutter_application_1/ui/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -183,6 +184,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           const SnackBar(
                             content: Text('Registration successful'),
                           ),
+                        );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (Context) => LoginPage()),
                         );
                       } catch (e) {
                         ScaffoldMessenger.of(
