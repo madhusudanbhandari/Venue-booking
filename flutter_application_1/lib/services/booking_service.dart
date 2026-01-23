@@ -24,10 +24,16 @@ class BookingServices {
       throw Exception("Client not logged in");
     }
 
+    // Get owner ID from venue
+    final venueDoc = await _db.collection('venues').doc(venueId).get();
+    final venueData = venueDoc.data() as Map<String, dynamic>;
+    final ownerId = venueData['ownerId'];
+
     await _db.collection('bookings').add({
       'venueId': venueId,
       'venueName': venueName,
       'venueLocation': venueLocation,
+      'ownerId': ownerId, // ADD THIS
       'clientId': user.uid,
       'clientName': clientName,
       'clientPhone': clientPhone,
@@ -38,7 +44,7 @@ class BookingServices {
       'paymentMethod': paymentMethod,
       'totalAmount': totalAmount,
       'notes': notes,
-      'status': 'pending', // pending, approved, rejected
+      'status': 'pending',
       'createdAt': FieldValue.serverTimestamp(),
     });
   }
@@ -67,5 +73,27 @@ class BookingServices {
       'status': status,
       'updatedAt': FieldValue.serverTimestamp(),
     });
+  }
+
+  Stream<QuerySnapshot> getOwnerBookingRequests() {
+    final user = _auth.currentUser;
+    if (user == null) throw Exception("Not logged in");
+
+    return _db
+        .collection('bookings')
+        .where('ownerId', isEqualTo: user.uid)
+        // Remove the orderBy line
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getOwnerEarnings() {
+    final user = _auth.currentUser;
+    if (user == null) throw Exception("Not logged in");
+
+    return _db
+        .collection('bookings')
+        .where('ownerId', isEqualTo: user.uid)
+        .where('status', isEqualTo: 'approved')
+        .snapshots();
   }
 }

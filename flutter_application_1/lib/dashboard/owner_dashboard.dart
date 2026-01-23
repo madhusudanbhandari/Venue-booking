@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/venue_services.dart';
 import 'package:flutter_application_1/ui/add_venue_page.dart';
-import 'package:flutter_application_1/ui/booking_request.dart';
+import 'package:flutter_application_1/ui/booking_detail.dart';
+import 'package:flutter_application_1/services/booking_service.dart';
 import 'package:flutter_application_1/ui/profile_page.dart';
 
 class OwnerDashboard extends StatelessWidget {
@@ -94,15 +95,73 @@ class OwnerDashboard extends StatelessWidget {
             ),
 
             const SizedBox(height: 10),
+            StreamBuilder(
+              stream: BookingServices().getOwnerBookingRequests(),
+              builder: (context, snapshot) {
+                // Check for errors
+                if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                }
 
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => BookingRequestPage()),
+                // Check loading state
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                // Check if data exists
+                if (!snapshot.hasData) {
+                  return const Center(child: Text("No data available"));
+                }
+
+                final bookings = snapshot.data!.docs;
+
+                if (bookings.isEmpty) {
+                  return const Center(child: Text("No booking requests"));
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: bookings.length,
+                  itemBuilder: (context, index) {
+                    final data = bookings[index].data() as Map<String, dynamic>;
+                    final bookingId = bookings[index].id;
+
+                    return Card(
+                      child: ListTile(
+                        title: Text(data['clientName'] ?? 'Unknown'),
+                        subtitle: Text(
+                          "${data['venueName'] ?? 'N/A'} • Rs ${data['totalAmount'] ?? 0}",
+                        ),
+                        trailing: Text(
+                          (data['status'] ?? 'pending')
+                              .toString()
+                              .toUpperCase(),
+                          style: TextStyle(
+                            color: data['status'] == 'approved'
+                                ? Colors.green
+                                : data['status'] == 'rejected'
+                                ? Colors.red
+                                : Colors.orange,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BookingDetailPage(
+                                bookingId: bookingId,
+                                bookingData: data,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 );
               },
-              child: const Text('View Booking Request'),
             ),
           ],
         ),
