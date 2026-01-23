@@ -32,25 +32,54 @@ class OwnerDashboard extends StatelessWidget {
         child: ListView(
           children: [
             /// 💰 Earnings
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const ListTile(
-                leading: Icon(Icons.attach_money),
-                title: Text("Total Earnings"),
-                subtitle: Text("Rs. 1,20,000"),
-              ),
+            /// 💰 Earnings
+            StreamBuilder(
+              stream: BookingServices().getOwnerEarnings(),
+              builder: (context, snapshot) {
+                // Handle errors
+                if (snapshot.hasError) {
+                  return Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.error, color: Colors.red),
+                      title: const Text("Error loading earnings"),
+                      subtitle: Text(snapshot.error.toString()),
+                    ),
+                  );
+                }
+
+                // Calculate total earnings from approved bookings
+                double totalEarnings = 0;
+
+                if (snapshot.hasData) {
+                  final bookings = snapshot.data!.docs;
+                  for (var booking in bookings) {
+                    final data = booking.data() as Map<String, dynamic>;
+                    // Only count approved bookings
+                    if (data['status'] == 'approved') {
+                      totalEarnings += (data['totalAmount'] ?? 0);
+                    }
+                  }
+                }
+
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ListTile(
+                    leading: const Icon(Icons.attach_money),
+                    title: const Text("Total Earnings"),
+                    subtitle: Text(
+                      "Rs. ${totalEarnings.toStringAsFixed(0)}",
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-
-            const SizedBox(height: 25),
-
-            /// 🏛 My Venues
-            const Text(
-              "My Venues",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-
             const SizedBox(height: 10),
 
             //_venueTile(),
