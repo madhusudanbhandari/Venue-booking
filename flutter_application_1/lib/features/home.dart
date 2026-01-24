@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart ';
+import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -6,16 +6,43 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
-      appBar: AppBar(title: const Text('Home'), centerTitle: true),
-      body: const Center(
+      backgroundColor: Colors.blueAccent.shade100,
+      appBar: AppBar(
+        title: const Text('Home'),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: Center(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
-
-          child: Text(
-            'The Venue Booking System is a modern digital platform designed to simplify the process of booking venues for social gatherings, corporate meetings, and special events. The application allows users to explore a wide range of venues based on their preferences such as location, price, and availability. With an intuitive interface and secure payment options, users can easily book venues while venue owners can manage their listings efficiently. The system aims to reduce manual booking efforts and provide a seamless experience for both clients and venue owners.',
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 18),
+          padding: const EdgeInsets.all(16),
+          child: Card(
+            color: Colors.blueAccent,
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                'The Venue Booking System is a modern digital platform designed to '
+                'simplify the process of booking venues for social gatherings, '
+                'corporate meetings, and special events.\n\n'
+                'The application allows users to explore a wide range of venues '
+                'based on preferences such as location, price, and availability. '
+                'With an intuitive interface and secure payment options, users '
+                'can easily book venues while venue owners manage their listings '
+                'efficiently.\n\n'
+                'The system aims to reduce manual booking efforts and provide a '
+                'seamless, transparent, and reliable experience for both clients '
+                'and venue owners.',
+                style: const TextStyle(
+                  fontSize: 16,
+                  height: 1.6,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.justify,
+              ),
+            ),
           ),
         ),
       ),
