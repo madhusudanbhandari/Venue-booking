@@ -81,6 +81,7 @@ class OwnerDashboard extends StatelessWidget {
               },
             ),
             const SizedBox(height: 10),
+            Text('Your Venues'),
 
             //_venueTile(),
             StreamBuilder(
@@ -200,7 +201,7 @@ class OwnerDashboard extends StatelessWidget {
         currentIndex: 0,
         onTap: (index) {
           // Handle navigation based on index
-          if (index == 2) {
+          if (index == 1) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ProfilePage()),
@@ -209,10 +210,7 @@ class OwnerDashboard extends StatelessWidget {
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Dashboard"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: "Bookings",
-          ),
+          //BottomNavigationBarItem(icon: Icon(Icons.calendar_today),label: "Bookings",),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
       ),
