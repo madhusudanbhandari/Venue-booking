@@ -282,7 +282,7 @@ class _ClientDashboardState extends State<ClientDashboard> {
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: "Bookings"),
+          //BottomNavigationBarItem(icon: Icon(Icons.book), label: "Bookings"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
       ),
