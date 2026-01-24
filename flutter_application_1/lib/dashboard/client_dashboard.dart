@@ -273,7 +273,7 @@ class _ClientDashboardState extends State<ClientDashboard> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         onTap: (index) {
-          if (index == 2) {
+          if (index == 1) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ProfilePage()),
