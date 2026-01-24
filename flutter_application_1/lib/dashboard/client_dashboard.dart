@@ -11,6 +11,47 @@ class ClientDashboard extends StatefulWidget {
 }
 
 class _ClientDashboardState extends State<ClientDashboard> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  String _selectedFilter = 'All'; // All, Price, Location, Capacity
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  // Filter venues based on search query and selected filter
+  List<dynamic> _filterVenues(List<dynamic> venues) {
+    if (_searchQuery.isEmpty) {
+      return venues;
+    }
+
+    return venues.where((venue) {
+      final data = venue.data() as Map<String, dynamic>;
+      final name = (data['name'] ?? '').toString().toLowerCase();
+      final location = (data['location'] ?? '').toString().toLowerCase();
+      final capacity = (data['capacity'] ?? '').toString().toLowerCase();
+      final price = (data['price'] ?? '').toString().toLowerCase();
+      final query = _searchQuery.toLowerCase();
+
+      // Search based on selected filter
+      switch (_selectedFilter) {
+        case 'Price':
+          return price.contains(query);
+        case 'Location':
+          return location.contains(query);
+        case 'Capacity':
+          return capacity.contains(query);
+        default: // 'All'
+          return name.contains(query) ||
+              location.contains(query) ||
+              capacity.contains(query) ||
+              price.contains(query);
+      }
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,9 +66,27 @@ class _ClientDashboardState extends State<ClientDashboard> {
           children: [
             /// 🔍 Search
             TextField(
+              controller: _searchController,
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
               decoration: InputDecoration(
-                hintText: "Search venues by location or name",
+                hintText:
+                    "Search venues by ${_selectedFilter == 'All' ? 'name, location, capacity, or price' : _selectedFilter.toLowerCase()}",
                 prefixIcon: const Icon(Icons.search),
+                suffixIcon: _searchQuery.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          setState(() {
+                            _searchController.clear();
+                            _searchQuery = '';
+                          });
+                        },
+                      )
+                    : null,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -39,19 +98,37 @@ class _ClientDashboardState extends State<ClientDashboard> {
             /// 🎯 Filters
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Chip(label: Text("Price")),
-                Chip(label: Text("Location")),
-                Chip(label: Text("Capacity")),
+              children: [
+                _buildFilterChip('All'),
+                _buildFilterChip('Price'),
+                _buildFilterChip('Location'),
+                _buildFilterChip('Capacity'),
               ],
             ),
 
             const SizedBox(height: 30),
 
             /// 🏛 Featured Venues
-            const Text(
-              "Available Venues",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Available Venues",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                if (_searchQuery.isNotEmpty)
+                  StreamBuilder(
+                    stream: VenueServices().getAllVenues(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) return const SizedBox();
+                      final filtered = _filterVenues(snapshot.data!.docs);
+                      return Text(
+                        "${filtered.length} found",
+                        style: const TextStyle(color: Colors.grey),
+                      );
+                    },
+                  ),
+              ],
             ),
 
             const SizedBox(height: 15),
@@ -69,35 +146,90 @@ class _ClientDashboardState extends State<ClientDashboard> {
                   return const Center(child: Text("No venues available"));
                 }
 
+                // Apply filters
+                final filteredVenues = _filterVenues(venues);
+
+                if (filteredVenues.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(40),
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.search_off,
+                            size: 64,
+                            color: Colors.grey,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "No venues found for '$_searchQuery'",
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: venues.length,
+                  itemCount: filteredVenues.length,
                   itemBuilder: (context, index) {
-                    final data = venues[index].data() as Map<String, dynamic>;
+                    final data =
+                        filteredVenues[index].data() as Map<String, dynamic>;
 
                     return Card(
+                      margin: const EdgeInsets.only(bottom: 15),
                       child: ListTile(
                         title: Text(data['name']),
                         subtitle: Text(
                           "${data['location']} • Capacity ${data['capacity']}",
                         ),
-                        trailing: Text("Rs ${data['price']}"),
-                        leading: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BookVenuePage(
-                                  venueId: venues[index].id,
-                                  venueName: data['name'],
-                                  venuePrice: data['price'],
-                                  venueLocation: data['location'],
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "Rs ${data['price']}",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            SizedBox(
+                              height: 30,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BookVenuePage(
+                                        venueId: filteredVenues[index].id,
+                                        venueName: data['name'],
+                                        venuePrice: data['price'],
+                                        venueLocation: data['location'],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Book',
+                                  style: TextStyle(fontSize: 12),
                                 ),
                               ),
-                            );
-                          },
-                          child: Text('Book'),
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -119,12 +251,27 @@ class _ClientDashboardState extends State<ClientDashboard> {
             );
           }
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: "Bookings"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
       ),
+    );
+  }
+
+  Widget _buildFilterChip(String label) {
+    final isSelected = _selectedFilter == label;
+    return FilterChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (selected) {
+        setState(() {
+          _selectedFilter = label;
+        });
+      },
+      selectedColor: Colors.blue.shade200,
+      checkmarkColor: Colors.blue.shade700,
     );
   }
 }
