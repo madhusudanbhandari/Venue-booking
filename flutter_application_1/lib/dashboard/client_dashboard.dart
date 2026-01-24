@@ -184,50 +184,79 @@ class _ClientDashboardState extends State<ClientDashboard> {
                         filteredVenues[index].data() as Map<String, dynamic>;
 
                     return Card(
-                      margin: const EdgeInsets.only(bottom: 15),
-                      child: ListTile(
-                        title: Text(data['name']),
-                        subtitle: Text(
-                          "${data['location']} • Capacity ${data['capacity']}",
-                        ),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                      margin: const EdgeInsets.only(bottom: 12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // Venue name
                             Text(
-                              "Rs ${data['price']}",
+                              data['name'],
                               style: const TextStyle(
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            SizedBox(
-                              height: 30,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BookVenuePage(
-                                        venueId: filteredVenues[index].id,
-                                        venueName: data['name'],
-                                        venuePrice: data['price'],
-                                        venueLocation: data['location'],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
+                            const SizedBox(height: 8),
+
+                            // Location and capacity
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on,
+                                  size: 14,
+                                  color: Colors.grey,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  data['location'],
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                                const SizedBox(width: 12),
+                                const Icon(
+                                  Icons.people,
+                                  size: 14,
+                                  color: Colors.grey,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  "Capacity ${data['capacity']}",
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+
+                            // Price and Book button
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Rs ${data['price']}",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.green,
                                   ),
                                 ),
-                                child: const Text(
-                                  'Book',
-                                  style: TextStyle(fontSize: 12),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BookVenuePage(
+                                          venueId: filteredVenues[index].id,
+                                          venueName: data['name'],
+                                          venuePrice: data['price'],
+                                          venueLocation: data['location'],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text('Book Now'),
                                 ),
-                              ),
+                              ],
                             ),
                           ],
                         ),
