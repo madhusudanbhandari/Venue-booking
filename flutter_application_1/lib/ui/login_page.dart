@@ -3,6 +3,7 @@ import 'package:flutter_application_1/dashboard/client_dashboard.dart';
 import 'package:flutter_application_1/dashboard/owner_dashboard.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
 import 'package:flutter_application_1/services/user_services.dart';
+import 'package:flutter_application_1/ui/forget_password_page.dart';
 import 'package:flutter_application_1/ui/register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -206,7 +207,12 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        // TODO: Implement forgot password
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgotPasswordPage(),
+                          ),
+                        );
                       },
                       child: Text(
                         "Forgot Password?",
