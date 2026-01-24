@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart ';
+import 'package:flutter/material.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({super.key});
@@ -6,15 +6,40 @@ class ContactPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
-      appBar: AppBar(title: const Text('How to reach us?'), centerTitle: true),
-      body: const Center(
+      backgroundColor: Colors.blueAccent.shade100,
+      appBar: AppBar(
+        title: const Text('How to Reach Us'),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: Center(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Text(
-            'We value user feedback and are always ready to assist with any queries or issues. The Contact section allows users to get in touch with our support team for booking assistance, technical issues, or general inquiries. Users can submit their name, email address, and message, and our team will respond promptly. This section ensures effective communication and enhances user trust and satisfaction.',
-            style: TextStyle(fontSize: 18),
-            textAlign: TextAlign.start,
+          padding: const EdgeInsets.all(16),
+          child: Card(
+            color: Colors.blueAccent,
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                'We value user feedback and are always ready to assist with any '
+                'queries or issues you may have.\n\n'
+                'The Contact section allows users to get in touch with our support '
+                'team for booking assistance, technical issues, or general inquiries. '
+                'Users can submit their name, email address, and message, and our '
+                'team will respond promptly.\n\n'
+                'This section ensures effective communication and enhances user '
+                'trust, reliability, and overall satisfaction.',
+                style: const TextStyle(
+                  fontSize: 16,
+                  height: 1.6,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.justify,
+              ),
+            ),
           ),
         ),
       ),
