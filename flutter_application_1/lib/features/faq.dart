@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart ';
+import 'package:flutter/material.dart';
 
 class FaqPage extends StatelessWidget {
   const FaqPage({super.key});
@@ -6,15 +6,35 @@ class FaqPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
-      appBar: AppBar(title: const Text('FAQ'), centerTitle: true),
-      body: const Center(
+      backgroundColor: Colors.blueAccent.shade100,
+      appBar: AppBar(title: const Text('FAQ'), centerTitle: true, elevation: 0),
+      body: Center(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Text(
-            'The FAQ section provides clear answers to commonly asked questions regarding venue booking, payments, cancellations, and account management. It helps users understand how the system works without needing direct support. By addressing frequent concerns in a structured manner, the FAQ section improves user experience and reduces confusion, making the platform more accessible for first-time users.',
-            style: TextStyle(fontSize: 18),
-            textAlign: TextAlign.start,
+          padding: const EdgeInsets.all(16),
+          child: Card(
+            color: Colors.blueAccent,
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                'The FAQ section provides clear answers to commonly asked questions '
+                'regarding venue booking, payments, cancellations, and account management.\n\n'
+                'It helps users understand how the system works without needing direct support. '
+                'By addressing frequent concerns in a structured manner, the FAQ section improves '
+                'user experience and reduces confusion.\n\n'
+                'This makes the platform more accessible, reliable, and user-friendly for '
+                'first-time users and regular customers alike.',
+                style: const TextStyle(
+                  fontSize: 16,
+                  height: 1.6,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.justify,
+              ),
+            ),
           ),
         ),
       ),
